@@ -1,20 +1,18 @@
 import React from 'react';
 import './App.css';
 import PanelArray from './components/PanelArray'
+import {Col, Container, Row} from 'react-bootstrap'
+import Header from './components/Header'
+import * as keys from './data-keys'
 
 function App() {
-  window.localStorage.setItem("level", "9")
-  window.localStorage.setItem("health", "108")
-  window.localStorage.setItem("max-health", "108")
-  window.localStorage.setItem("AC", "19")
-  window.localStorage.setItem("initiative-mod", "6")
-  window.localStorage.setItem("land-speed", "30")
-  window.localStorage.setItem("passive-perception", "14")
-  window.localStorage.setItem("proficiency-bonus", "4")
-  window.localStorage.setItem("num-hit-dice", "9")
-  window.localStorage.setItem("type-hit-dice", "10")
+  const [health, setHealth] = React.useState(parseInt(window.localStorage.getItem(keys.HEALTH) || "-1"))
+  let name = window.localStorage.getItem(keys.CHARACTER_NAME) || "Name not found"
+  // let health = parseInt(window.localStorage.getItem(keys.HEALTH) || "-1")
+  let healthMax = parseInt(window.localStorage.getItem(keys.MAX_HEALTH) || "-1")
   return (
     <div className="App">
+      <Header name={name} health={health} setHealth={setHealth} healthMax={healthMax} />
       <PanelArray activePanels={['AC', 'Selection']} />
     </div>
   );

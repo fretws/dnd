@@ -50,9 +50,8 @@
   - Blood rite is removed automatically at short rest
   - When selection is finalized, notify to roll correct dice type (to reduce current health by that amount)
 
-### Health / Resources
+### Resources
 
-- Health
 - AC
 - Blood Magic Uses
 - Hit Dice
@@ -65,6 +64,7 @@
 
 ### Ability Modifiers
 
+- Proficiency bonus
 - Grid of ability modifiers with their names beside them and the ability score they're based off of
 - Tapping on an ability entry will open a page that contains all class features
 
