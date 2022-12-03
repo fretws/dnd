@@ -21,8 +21,11 @@ export default function Header(props: Props) {
         <Col xs={2}>
           <Form.Control id={"healthControl"} type={"number"} onBlur={
             (event) => {
-              props.setHealth(parseInt(event.target.value))
-              window.localStorage.setItem(keys.HEALTH, event.target.value)
+              let inValue = parseInt(event.target.value)
+              let newHealth = props.health ? props.health + inValue : inValue
+              props.setHealth(newHealth)
+              window.localStorage.setItem(keys.HEALTH, String(newHealth))
+              event.target.value = "0"
             }} />
         </Col>
         <Col xs={3}>
