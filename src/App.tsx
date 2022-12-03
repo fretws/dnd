@@ -3,6 +3,7 @@ import './App.css';
 import PanelArray from './components/PanelArray'
 
 function App() {
+  window.localStorage.setItem("level", "9")
   window.localStorage.setItem("health", "108")
   window.localStorage.setItem("max-health", "108")
   window.localStorage.setItem("AC", "19")

@@ -1,46 +1,85 @@
-# Getting Started with Create React App
+# Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Data Tracked
 
-## Available Scripts
+### Modifiable
 
-In the project directory, you can run:
+- health
+- max-health
+- Blood Magic Uses
+- Max Blood Magic Uses
+- AC
+- initiative-mod
+- land-speed
+- passive-perception
+- proficiency-bonus
+- num-hit-dice
+- type-hit-dice
+- blood rites applied
+  - Map of weapon IDs to Blood Rite IDs (each weapon a single rite ID)
 
-### `npm start`
+### Unmodifiable
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Weapon ID numbers
+- Blood Rite ID numbers
+  - No rite is denoted as an ID of -100?
+- Blood magic ID numbers
+- Ability score IDs (3 letter abbrev.)
+- Movement speed IDs (climbing, flying, swimming, ...)
+  - Object with Name of movement type
+  - with icon image path
+- Skill IDs (just the names, lower case and replacing ' ' with '-')
+  - Object with key base-ability (STR, DEX, ...)
+- Class feature / status effect IDs
+  - Linked to a name,
+  - a description,
+  - a list of the abilities it affects,
+  - a list of the weapons it affects?,
+  - a map of the saving throws it affects,
+    - maps each Ability score ID to a number: -1, 0, or 1, denoting disadvantage, no change, or advantage in that order
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+## Panel Contents
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Weapons
 
-### `npm run build`
+- One row each weapon
+- Weapon row has button to select blood rite applied
+  - When pressed, opens available blood rites list to select
+  - If blood rite is re-selected, it is removed
+  - Blood rite is removed automatically at short rest
+  - When selection is finalized, notify to roll correct dice type (to reduce current health by that amount)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Health / Resources
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Health
+- AC
+- Blood Magic Uses
+- Hit Dice
+- Initiative mod
+- Movement Speed
+  - Click to cycle through movement types
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Saving Throws
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Ability Modifiers
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Grid of ability modifiers with their names beside them and the ability score they're based off of
+- Tapping on an ability entry will open a page that contains all class features
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Blood Magic
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- List of names with short descriptions
+- Tap reveals full descriptions
+- Cast button consumes a blood magic use
+- Cast button is on each blood magic type and within each full description
 
-## Learn More
+### General Rules Reference -- Low priority
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Actions possible
+  - Dodge, grapple, etc.
+- Falling damage
+- Holding breath
+- Size of different creatures?
+- Light and sight rules

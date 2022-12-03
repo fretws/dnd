@@ -1,9 +1,13 @@
-.tr {
+.trow {
   display: flex;
   flex-direction: row;
 }
 
-.tc {
+.tcol {
   display: flex;
   flex-direction: column;
+}
+
+.cell {
+
 }

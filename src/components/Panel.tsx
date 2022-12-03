@@ -1,5 +1,6 @@
 import React from "react"
 import PanelAC from "./PanelAC"
+import {Col} from 'react-bootstrap'
 
 export type Variant = "AC" | "Selection"
 
@@ -17,5 +18,5 @@ export default function Panel(props: Props) {
       content = "Selection variant"
       break;
   }
-  return <div className={"panel"}>{ content }</div>
+  return <Col className={"panel"}>{ content }</Col>
 }
