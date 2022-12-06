@@ -7,16 +7,14 @@ interface Props {
   dexMod: number,
   armorAC: number,
   dualWielding: boolean,
+  maledicts: number,
 }
 
 export default function PanelAC(props: Props) {
-  let dex = parseInt(window.localStorage.getItem(keys.DEX) || "-40")
-  let dexMod = (dex - 10) / 2
-  let AC = props.armorAC + dexMod + (props.dualWielding ? 1 : 0)
+  let AC = props.armorAC + props.dexMod + (props.dualWielding ? 1 : 0)
   let landSpeed = window.localStorage.getItem(keys.LAND_SPEED)
   let numHitDice = window.localStorage.getItem(keys.NUM_HIT_DICE)
   let typeHitDice = window.localStorage.getItem(keys.TYPE_HIT_DICE)
-  let maledicts = window.localStorage.getItem(keys.NUM_MALEDICTS)
   let maxMaledicts = window.localStorage.getItem(keys.MAX_MALEDICTS)
   return (
     <Container>
@@ -25,10 +23,10 @@ export default function PanelAC(props: Props) {
         {/*<Col>Proficiency <br/> +{proficiencyBonus}</Col>*/}
         <Col><h5>AC</h5>{AC}</Col>
         <Col><h5>Hit Dice</h5>{numHitDice}d{typeHitDice}</Col>
-        <Col><h5>Maledicts</h5>{maledicts}/{maxMaledicts}</Col>
+        <Col><h5>Maledicts</h5>{props.maledicts}/{maxMaledicts}</Col>
       </Row>
       <Row>
-        <Col><h5>Initiative</h5>+{dexMod}</Col>
+        <Col><h5>Initiative</h5>+{props.dexMod}</Col>
         <Col><h5>Land Speed</h5>{landSpeed}</Col>
       </Row>
     </Container>
