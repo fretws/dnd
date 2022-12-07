@@ -17,7 +17,7 @@ export default function PanelAC(props: Props) {
   let typeHitDice = window.localStorage.getItem(keys.TYPE_HIT_DICE)
   let maxMaledicts = window.localStorage.getItem(keys.MAX_MALEDICTS)
   return (
-    <Container>
+    <Container className={styles.panel}>
       <Row>
         {/*<Col>Health <br/> {health} / {healthMax} <br/> <input type={"text"} /></Col>*/}
         {/*<Col>Proficiency <br/> +{proficiencyBonus}</Col>*/}

@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as keys from './data-keys'
+import {ActiveRites} from './components/PanelWeapons'
 
 window.localStorage.setItem(keys.CHARACTER_NAME, "Gunvar Dansend")
 window.localStorage.setItem(keys.LEVEL, "9")
@@ -19,6 +20,8 @@ window.localStorage.setItem(keys.NUM_HIT_DICE, "9")
 window.localStorage.setItem(keys.TYPE_HIT_DICE, "10")
 window.localStorage.setItem(keys.NUM_MALEDICTS, "2")
 window.localStorage.setItem(keys.MAX_MALEDICTS, "2")
+const RITES: ActiveRites = ["Fire", "Lightning", "none"]
+window.localStorage.setItem(keys.ACTIVE_RITES, JSON.stringify(RITES))
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

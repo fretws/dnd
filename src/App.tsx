@@ -4,7 +4,8 @@ import {Col, Container, Row} from 'react-bootstrap'
 import Header from './components/Header'
 import * as keys from './data-keys'
 import PanelAC from './components/PanelAC'
-import PanelWeapons from './components/PanelWeapons'
+import PanelWeapons, {ActiveRites} from './components/PanelWeapons'
+
 
 function App() {
   let name = window.localStorage.getItem(keys.CHARACTER_NAME) || "Name not found"
@@ -15,6 +16,8 @@ function App() {
   const [numHitDice, setNumHitDice] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_HIT_DICE) || "-1"))
   const [dex, setDex] = React.useState(parseInt(window.localStorage.getItem(keys.DEX) || "-70"))
   const [maledicts, setMaledicts] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_MALEDICTS) || "-7"))
+  let ritesString = window.localStorage.getItem(keys.ACTIVE_RITES) || JSON.stringify(["none", "none", "none"])
+  const [activeRites, setRites] = React.useState(JSON.parse(ritesString))
 
   let dexMod = Math.floor((dex - 10) / 2)
   console.log(dexMod)
@@ -34,7 +37,7 @@ function App() {
             <PanelAC dexMod={dexMod} armorAC={armorAC} dualWielding={true} maledicts={maledicts} />
           </Col>
           <Col>
-            <PanelWeapons equipped={[1, 2]} bloodRites={["Fire", "Lightning", "none"]} dexMod={dexMod}/>
+            <PanelWeapons equipped={[1, 2]} dexMod={dexMod} setRites={setRites} bloodRites={activeRites} />
           </Col>
         </Row>
         <Row>
