@@ -9,8 +9,6 @@ interface Props {
   health: number,
   setHealth: React.Dispatch<React.SetStateAction<number>>,
   healthMax: number,
-  numHitDice: number,
-  setNumHitDice: React.Dispatch<React.SetStateAction<number>>,
 }
 
 export default function Header(props: Props) {
