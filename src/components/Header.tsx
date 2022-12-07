@@ -2,6 +2,7 @@ import React from "react"
 import styles from "./Header.module.css"
 import {Form, Col, Container, Row} from 'react-bootstrap'
 import * as keys from '../data-keys'
+import FormInput from './FormInput'
 
 interface Props {
   name: String,
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function Header(props: Props) {
+  // let healthControl = React.useRef<HTMLInputElement>(null)
   return (
     <Container fluid className={styles.container}>
       <Row>
@@ -21,14 +23,12 @@ export default function Header(props: Props) {
           <h1>{props.name}</h1>
         </Col>
         <Col xs={2}>
-          <Form.Control id={"healthControl"} type={"number"} onBlur={
-            (event) => {
-              let inValue = parseInt(event.target.value)
-              let newHealth = props.health ? props.health + inValue : inValue
-              props.setHealth(newHealth)
-              window.localStorage.setItem(keys.HEALTH, String(newHealth))
-              event.target.value = "0"
-            }} />
+          <FormInput defaultValue={"0"} onSubmit={(healthControl) => {
+            let inValue = parseInt(healthControl.value)
+            let newHealth = props.health ? props.health + inValue : inValue
+            props.setHealth(newHealth)
+            window.localStorage.setItem(keys.HEALTH, String(newHealth))
+          }} />
         </Col>
         <Col xs={3}>
           <h2>{props.health}/{props.healthMax}HP</h2>
