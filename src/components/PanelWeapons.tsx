@@ -20,6 +20,9 @@ export default function PanelWeapons(props: Props) {
   return (
     <Container className={styles.panel}>
       <Row>
+        <Col><h6>Take 1d6 Necrotic on activation of a Rite</h6></Col>
+      </Row>
+      <Row>
         <Col><h5>Rapier</h5></Col>
         <Col><p>+{1 + props.dexMod + proficiency} to Hit</p></Col>
         <Col><p>1d8{props.bloodRites[0] !== "none" ? " + 1d6 " + props.bloodRites[0] : ""} + {1 + props.dexMod}</p></Col>

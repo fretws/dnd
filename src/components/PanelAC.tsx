@@ -5,6 +5,7 @@ import React, {SetStateAction} from 'react'
 
 interface Props {
   dexMod: number,
+  landSpeed: number,
   armorAC: number,
   dualWielding: boolean,
   maledicts: number,
@@ -17,7 +18,6 @@ interface Props {
 
 export default function PanelAC(props: Props) {
   let AC = props.armorAC + props.dexMod + (props.dualWielding ? 1 : 0)
-  let landSpeed = window.localStorage.getItem(keys.LAND_SPEED)
   let typeHitDice = window.localStorage.getItem(keys.TYPE_HIT_DICE)
   let maxMaledicts = window.localStorage.getItem(keys.MAX_MALEDICTS)
 
@@ -44,7 +44,7 @@ export default function PanelAC(props: Props) {
       <Row>
         <Col><h5>Rest</h5><Button className={styles.restButton} onClick={props.shortRest}>Short</Button><Button className={styles.restButton} onClick={props.longRest}>Long</Button></Col>
         <Col><h5>Initiative</h5>+{props.dexMod}</Col>
-        <Col><h5>Land Speed</h5>{landSpeed}</Col>
+        <Col><h5>Land Speed</h5>{props.landSpeed}</Col>
       </Row>
     </Container>
   )
