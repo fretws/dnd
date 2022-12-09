@@ -1,10 +1,11 @@
 import styles from './PanelMutagens.module.css'
-import React, {SetStateAction} from 'react'
+import React, {RefObject, SetStateAction} from 'react'
 import {Form, Col, Container, Row} from 'react-bootstrap'
 import {AdvantageTypes} from '../App'
 import * as keys from '../data-keys'
 
 interface Props {
+  mutagenRefs: RefObject<HTMLInputElement>[],
   preppedMutagens: boolean[],
   setPreppedMutagens: React.Dispatch<SetStateAction<boolean[]>>
   activeMutagens: boolean[],
@@ -17,8 +18,16 @@ interface Props {
   setAdvantageTypes: React.Dispatch<SetStateAction<AdvantageTypes>>,
   landSpeed: number,
   setLandSpeed: React.Dispatch<SetStateAction<number>>,
+  maledicts: number,
+  setMaledicts: React.Dispatch<SetStateAction<number>>,
+  darkVision: number,
+  setDarkVision: React.Dispatch<SetStateAction<number>>,
 }
 
+// export const MUTAGEN_TOGGLES: (() => void)[] = [
+//   () => {}
+// ]
+//
 export default function PanelMutagens(props: Props) {
   let profBonus = window.localStorage.getItem(keys.PROFICIENCY_BONUS)
   return (
@@ -27,8 +36,8 @@ export default function PanelMutagens(props: Props) {
         <Col><h6>Prep 2 Mutagens Per Short Rest</h6></Col>
       </Row>
       <Row>
-        <Col><h6>Celerity</h6></Col>
-        <Col>DEX +3, Disadv. on WIS Save</Col>
+        <Col xs={2}><h6>Celerity</h6></Col>
+        <Col xs={6}>DEX +3, Disadv. on WIS Save</Col>
         <Col>
           <h6>Prepped</h6>
           <Form.Check checked={props.preppedMutagens[0]} onChange={() => {
@@ -38,9 +47,8 @@ export default function PanelMutagens(props: Props) {
         </Col>
         <Col>
           <h6>Active</h6>
-          <Form.Check checked={props.activeMutagens[0]} onChange={(event) => {
-            if (event.target.checked) {
-              console.log("Dex: " + props.dex)
+          <Form.Check ref={props.mutagenRefs[0]} checked={props.activeMutagens[0]} onChange={() => {
+            if (!props.activeMutagens[0]) {
               props.setDex(props.dex + 3)
               props.setAdvantageTypes({
                 ...props.advantageTypes,
@@ -60,8 +68,8 @@ export default function PanelMutagens(props: Props) {
         </Col>
       </Row>
       <Row>
-        <Col><h6>Sagacity</h6></Col>
-        <Col>Int +3, Disadv. on CHR Save</Col>
+        <Col xs={2}><h6>Sagacity</h6></Col>
+        <Col xs={6}>Int +3, Disadv. on CHR Save</Col>
         <Col>
           <h6>Prepped</h6>
           <Form.Check checked={props.preppedMutagens[1]} onChange={() => {
@@ -71,8 +79,8 @@ export default function PanelMutagens(props: Props) {
         </Col>
         <Col>
           <h6>Active</h6>
-          <Form.Check checked={props.activeMutagens[1]} onChange={(event) => {
-            if (event.target.checked) {
+          <Form.Check ref={props.mutagenRefs[1]} checked={props.activeMutagens[1]} onChange={() => {
+            if (!props.activeMutagens[1]) {
               props.setInt(props.int + 3)
               props.setAdvantageTypes({
                 ...props.advantageTypes,
@@ -91,8 +99,8 @@ export default function PanelMutagens(props: Props) {
         </Col>
       </Row>
       <Row>
-        <Col><h6>Reconstruct</h6></Col>
-        <Col>Heal {profBonus} each turn, -10ft speed</Col>
+        <Col xs={2}><h6>Reconstruct</h6></Col>
+        <Col xs={6}>Heal {profBonus} each turn, -10ft speed</Col>
         <Col>
           <h6>Prepped</h6>
           <Form.Check checked={props.preppedMutagens[2]} onChange={() => {
@@ -102,16 +110,16 @@ export default function PanelMutagens(props: Props) {
         </Col>
         <Col>
           <h6>Active</h6>
-          <Form.Check checked={props.activeMutagens[2]} onChange={(event) => {
-            props.setLandSpeed(props.landSpeed + (event.target.checked ? -10 : 10))
+          <Form.Check ref={props.mutagenRefs[2]} checked={props.activeMutagens[2]} onChange={() => {
+            props.setLandSpeed(props.landSpeed + (!props.activeMutagens[2] ? -10 : 10))
             props.activeMutagens[2] = !props.activeMutagens[2]
             props.setActiveMutagens([...props.activeMutagens])
           }} />
         </Col>
       </Row>
       <Row>
-        <Col><h6>Vermillion</h6></Col>
-        <Col>+1 maledict, Disadv. on Death Saves</Col>
+        <Col xs={2}><h6>Vermillion</h6></Col>
+        <Col xs={6}>+1 maledict, Disadv. on Death Saves</Col>
         <Col>
           <h6>Prepped</h6>
           <Form.Check checked={props.preppedMutagens[3]} onChange={() => {
@@ -121,13 +129,15 @@ export default function PanelMutagens(props: Props) {
         </Col>
         <Col>
           <h6>Active</h6>
-          <Form.Check checked={props.activeMutagens[3]} onChange={(event) => {
-            if (event.target.checked) {
+          <Form.Check ref={props.mutagenRefs[3]} checked={props.activeMutagens[3]} onChange={() => {
+            if (!props.activeMutagens[3]) {
+              props.setMaledicts(props.maledicts + 1)
               props.setAdvantageTypes({
                 ...props.advantageTypes,
                 "death-saves": "disadvantage"
               })
             } else {
+              props.setMaledicts(props.maledicts - 1)
               props.setAdvantageTypes({
                 ...props.advantageTypes,
                 "death-saves": "none"
@@ -139,18 +149,20 @@ export default function PanelMutagens(props: Props) {
         </Col>
       </Row>
       <Row>
-        <Col><h6>Nighteye</h6></Col>
-        <Col>+60ft Dark Vision, Sunlight Sensitivity</Col>
+        <Col xs={2}><h6>Nighteye</h6></Col>
+        <Col xs={6}>+60ft Dark Vision, Sunlight Sensitivity</Col>
         <Col>
           <h6>Prepped</h6>
           <Form.Check checked={props.preppedMutagens[4]} onChange={() => {
+
             props.preppedMutagens[4] = !props.preppedMutagens[4]
             props.setPreppedMutagens([...props.preppedMutagens])
           }} />
         </Col>
         <Col>
           <h6>Active</h6>
-          <Form.Check checked={props.activeMutagens[4]} onChange={() => {
+          <Form.Check ref={props.mutagenRefs[4]} checked={props.activeMutagens[4]} onChange={() => {
+            props.setDarkVision(props.darkVision + (!props.activeMutagens[4] ? 60 : -60))
             props.activeMutagens[4] = !props.activeMutagens[4]
             props.setActiveMutagens([...props.activeMutagens])
           }} />

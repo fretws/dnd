@@ -22,6 +22,7 @@ window.localStorage.setItem(keys.NUM_MALEDICTS, "2")
 window.localStorage.setItem(keys.MAX_MALEDICTS, "2")
 const RITES: ActiveRites = ["Fire", "Lightning", "none"]
 window.localStorage.setItem(keys.ACTIVE_RITES, JSON.stringify(RITES))
+window.localStorage.setItem(keys.DARK_VISION, "60")
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

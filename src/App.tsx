@@ -6,6 +6,7 @@ import * as keys from './data-keys'
 import PanelAC from './components/PanelAC'
 import PanelWeapons, {ActiveRites} from './components/PanelWeapons'
 import PanelMutagens from './components/PanelMutagens'
+import PanelCurses from './components/PanelCurses'
 
 type AdvantageType = "disadvantage" | "none" | "advantage"
 export type AdvantageTypes = {[key: string]: AdvantageType}
@@ -24,10 +25,14 @@ function App() {
   const [maledicts, setMaledicts] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_MALEDICTS) || "-7"))
   let ritesString = window.localStorage.getItem(keys.ACTIVE_RITES) || JSON.stringify(["none", "none", "none"])
   const [activeRites, setRites] = React.useState(JSON.parse(ritesString))
-  const [preppedMutagens, setPreppedMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.PREPPED_MUTAGENS) || JSON.stringify([false, false])))
-  const [activeMutagens, setActiveMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.ACTIVE_MUTAGENS) || JSON.stringify([false, false])))
+  const [preppedMutagens, setPreppedMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.PREPPED_MUTAGENS) || JSON.stringify([false, false, false, false, false])))
+  const [activeMutagens, setActiveMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.ACTIVE_MUTAGENS) || JSON.stringify([false, false, false, false, false])))
   const [advantageTypes, setAdvantageTypes] = React.useState(JSON.parse(window.localStorage.getItem(keys.ADVANTAGE_TYPES) || JSON.stringify({"wis-saves": "none"})))
-  console.log("wis saves " + advantageTypes["wis-saves"])
+  console.log("Dex: " + dex)
+  console.log("advantages " + JSON.stringify(advantageTypes))
+  const [darkVision, setDarkVision] = React.useState(parseInt(window.localStorage.getItem(keys.DARK_VISION) || "-30"))
+
+  const mutagenRefs = [React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null)]
 
   let dexMod = Math.floor((dex - 10) / 2)
 
@@ -35,6 +40,10 @@ function App() {
     console.log("Short Rest")
     setMaledicts(2)
     setRites(["none", "none", "none"])
+    activeMutagens.forEach((active: boolean, i: number) => {
+      if (active) mutagenRefs[i].current?.click()
+    })
+    setActiveMutagens([false, false, false, false, false])
   }
   let longRest = () => {
     console.log("Long Rest")
@@ -57,6 +66,7 @@ function App() {
               dexMod={dexMod}
               landSpeed={landSpeed}
               armorAC={armorAC}
+              darkVision={darkVision}
               dualWielding={true}
               maledicts={maledicts}
               setMaledicts={setMaledicts}
@@ -69,8 +79,14 @@ function App() {
           <Col>
             <PanelWeapons equipped={[1, 2]} dexMod={dexMod} setRites={setRites} bloodRites={activeRites} />
           </Col>
+        </Row>
+        <Row>
+          <Col>
+            <PanelCurses setMaledicts={setMaledicts} />
+          </Col>
           <Col>
             <PanelMutagens
+              mutagenRefs={mutagenRefs}
               preppedMutagens={preppedMutagens}
               setPreppedMutagens={setPreppedMutagens}
               activeMutagens={activeMutagens}
@@ -79,15 +95,16 @@ function App() {
               setDex={setDex}
               int={int}
               setInt={setInt}
+              darkVision={darkVision}
+              setDarkVision={setDarkVision}
               landSpeed={landSpeed}
               setLandSpeed={setLandSpeed}
+              maledicts={maledicts}
+              setMaledicts={setMaledicts}
               advantageTypes={advantageTypes}
               setAdvantageTypes={setAdvantageTypes}
             />
           </Col>
-        </Row>
-        <Row>
-
         </Row>
       </Container>
     </div>
