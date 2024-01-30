@@ -1,13 +1,18 @@
+// TODO: use React context instead of many of the state variables here
+
 import React from 'react';
 import './App.css';
 import Header from './components/Header'
 import * as keys from './data-keys'
 import PanelContainer from './components/PanelContainer';
+import initDefaultStats from './default-stats';
 
 type AdvantageType = "disadvantage" | "none" | "advantage"
 export type AdvantageTypes = {[key: string]: AdvantageType}
 
 function App() {
+  initDefaultStats()
+
   let name = window.localStorage.getItem(keys.CHARACTER_NAME) || "Name not found"
   let healthMax = parseInt(window.localStorage.getItem(keys.MAX_HEALTH) || "-1")
   let armorAC = parseInt(window.localStorage.getItem(keys.ARMOR) || "-1")

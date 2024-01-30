@@ -16,7 +16,7 @@
 - num-hit-dice
 - type-hit-dice
 - blood rites applied
-  - Map of weapon IDs to Blood Rite IDs (each weapon a single rite ID)
+  - Array indexed by weapon IDs containing Blood Rite IDs (i.e. an array map)
 
 ### Unmodifiable
 

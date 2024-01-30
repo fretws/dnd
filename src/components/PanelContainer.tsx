@@ -1,5 +1,3 @@
-// TODO: Refactor App.tsx main content into the PanelContainer component
-
 import React from "react"
 import { Col, Container, Row } from 'react-bootstrap'
 
