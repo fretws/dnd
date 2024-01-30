@@ -1,12 +1,8 @@
 import React from 'react';
 import './App.css';
-import {Col, Container, Row} from 'react-bootstrap'
 import Header from './components/Header'
 import * as keys from './data-keys'
-import PanelAC from './components/PanelAC'
-import PanelWeapons, {ActiveRites} from './components/PanelWeapons'
-import PanelMutagens from './components/PanelMutagens'
-import PanelCurses from './components/PanelCurses'
+import PanelContainer from './components/PanelContainer';
 
 type AdvantageType = "disadvantage" | "none" | "advantage"
 export type AdvantageTypes = {[key: string]: AdvantageType}
@@ -59,54 +55,35 @@ function App() {
         setHealth={setHealth}
         healthMax={healthMax}
       />
-      <Container>
-        <Row>
-          <Col>
-            <PanelAC
-              dexMod={dexMod}
-              landSpeed={landSpeed}
-              armorAC={armorAC}
-              darkVision={darkVision}
-              dualWielding={true}
-              maledicts={maledicts}
-              setMaledicts={setMaledicts}
-              numHitDice={numHitDice}
-              setNumHitDice={setNumHitDice}
-              shortRest={shortRest}
-              longRest={longRest}
-            />
-          </Col>
-          <Col>
-            <PanelWeapons equipped={[1, 2]} dexMod={dexMod} setRites={setRites} bloodRites={activeRites} />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <PanelCurses setMaledicts={setMaledicts} />
-          </Col>
-          <Col>
-            <PanelMutagens
-              mutagenRefs={mutagenRefs}
-              preppedMutagens={preppedMutagens}
-              setPreppedMutagens={setPreppedMutagens}
-              activeMutagens={activeMutagens}
-              setActiveMutagens={setActiveMutagens}
-              dex={dex}
-              setDex={setDex}
-              int={int}
-              setInt={setInt}
-              darkVision={darkVision}
-              setDarkVision={setDarkVision}
-              landSpeed={landSpeed}
-              setLandSpeed={setLandSpeed}
-              maledicts={maledicts}
-              setMaledicts={setMaledicts}
-              advantageTypes={advantageTypes}
-              setAdvantageTypes={setAdvantageTypes}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <PanelContainer
+        dexMod={dexMod}
+        landSpeed={landSpeed}
+        armorAC={armorAC}
+        darkVision={darkVision}
+        dualWielding={true}
+        maledicts={maledicts}
+        setMaledicts={setMaledicts}
+        numHitDice={numHitDice}
+        setNumHitDice={setNumHitDice}
+        shortRest={shortRest}
+        longRest={longRest}
+        weaponsEquipped={[1, 2]}
+        setRites={setRites}
+        activeRites={activeRites}
+        mutagenRefs={mutagenRefs}
+        preppedMutagens={preppedMutagens}
+        setPreppedMutagens={setPreppedMutagens}
+        activeMutagens={activeMutagens}
+        setActiveMutagens={setActiveMutagens}
+        dex={dex}
+        setDex={setDex}
+        int={int}
+        setInt={setInt}
+        setDarkVision={setDarkVision}
+        setLandSpeed={setLandSpeed}
+        advantageTypes={advantageTypes}
+        setAdvantageTypes={setAdvantageTypes}
+      />
     </div>
   );
 }
