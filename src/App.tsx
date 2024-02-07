@@ -1,17 +1,31 @@
 // TODO: use React context instead of many of the state variables here
 
-import React from 'react';
+import React, { createContext } from 'react';
 import './App.css';
 import Header from './components/Header'
 import * as keys from './data-keys'
 import PanelContainer from './components/PanelContainer';
-import initDefaultStats from './default-stats';
 
 type AdvantageType = "disadvantage" | "none" | "advantage"
-export type AdvantageTypes = {[key: string]: AdvantageType}
+export type AdvantageTypes = { [key: string]: AdvantageType }
+
+export interface HealthStats {
+  health: number,
+  setHealth: ( React.Dispatch<React.SetStateAction<number>> ) | ( (input: number) => null ),
+  healthMax: number,
+  numHitDice: number,
+  setNumHitDice: ( React.Dispatch<React.SetStateAction<number>> ) | ( (input: number) => null ),
+}
+
+export const HealthContext = createContext<HealthStats>({
+  health: -1,
+  setHealth: (input: number) => null,
+  healthMax: -1,
+  numHitDice: -1,
+  setNumHitDice: (input: number) => null
+});
 
 function App() {
-  initDefaultStats()
 
   let name = window.localStorage.getItem(keys.CHARACTER_NAME) || "Name not found"
   let healthMax = parseInt(window.localStorage.getItem(keys.MAX_HEALTH) || "-1")
@@ -28,7 +42,7 @@ function App() {
   const [activeRites, setRites] = React.useState(JSON.parse(ritesString))
   const [preppedMutagens, setPreppedMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.PREPPED_MUTAGENS) || JSON.stringify([false, false, false, false, false])))
   const [activeMutagens, setActiveMutagens] = React.useState(JSON.parse(window.localStorage.getItem(keys.ACTIVE_MUTAGENS) || JSON.stringify([false, false, false, false, false])))
-  const [advantageTypes, setAdvantageTypes] = React.useState(JSON.parse(window.localStorage.getItem(keys.ADVANTAGE_TYPES) || JSON.stringify({"wis-saves": "none"})))
+  const [advantageTypes, setAdvantageTypes] = React.useState(JSON.parse(window.localStorage.getItem(keys.ADVANTAGE_TYPES) || JSON.stringify({ "wis-saves": "none" })))
   console.log("Dex: " + dex)
   console.log("advantages " + JSON.stringify(advantageTypes))
   const [darkVision, setDarkVision] = React.useState(parseInt(window.localStorage.getItem(keys.DARK_VISION) || "-30"))
@@ -36,6 +50,14 @@ function App() {
   const mutagenRefs = [React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null)]
 
   let dexMod = Math.floor((dex - 10) / 2)
+
+  const healthStats: HealthStats = {
+    health: health,
+    setHealth: setHealth,
+    healthMax: healthMax,
+    numHitDice: numHitDice,
+    setNumHitDice: setNumHitDice,
+  }
 
   let shortRest = () => {
     console.log("Short Rest")
@@ -52,44 +74,44 @@ function App() {
     setNumHitDice(level)
     setHealth(healthMax)
   }
+
   return (
-    <div className="App">
-      <Header
-        name={name}
-        health={health}
-        setHealth={setHealth}
-        healthMax={healthMax}
-      />
-      <PanelContainer
-        dexMod={dexMod}
-        landSpeed={landSpeed}
-        armorAC={armorAC}
-        darkVision={darkVision}
-        dualWielding={true}
-        maledicts={maledicts}
-        setMaledicts={setMaledicts}
-        numHitDice={numHitDice}
-        setNumHitDice={setNumHitDice}
-        shortRest={shortRest}
-        longRest={longRest}
-        weaponsEquipped={[1, 2]}
-        setRites={setRites}
-        activeRites={activeRites}
-        mutagenRefs={mutagenRefs}
-        preppedMutagens={preppedMutagens}
-        setPreppedMutagens={setPreppedMutagens}
-        activeMutagens={activeMutagens}
-        setActiveMutagens={setActiveMutagens}
-        dex={dex}
-        setDex={setDex}
-        int={int}
-        setInt={setInt}
-        setDarkVision={setDarkVision}
-        setLandSpeed={setLandSpeed}
-        advantageTypes={advantageTypes}
-        setAdvantageTypes={setAdvantageTypes}
-      />
-    </div>
+    <HealthContext.Provider value={healthStats}>
+      <div className="App">
+        <Header
+          name={name}
+        />
+        <PanelContainer
+          dexMod={dexMod}
+          landSpeed={landSpeed}
+          armorAC={armorAC}
+          darkVision={darkVision}
+          dualWielding={true}
+          maledicts={maledicts}
+          setMaledicts={setMaledicts}
+          numHitDice={numHitDice}
+          setNumHitDice={setNumHitDice}
+          shortRest={shortRest}
+          longRest={longRest}
+          weaponsEquipped={[1, 2]}
+          setRites={setRites}
+          activeRites={activeRites}
+          mutagenRefs={mutagenRefs}
+          preppedMutagens={preppedMutagens}
+          setPreppedMutagens={setPreppedMutagens}
+          activeMutagens={activeMutagens}
+          setActiveMutagens={setActiveMutagens}
+          dex={dex}
+          setDex={setDex}
+          int={int}
+          setInt={setInt}
+          setDarkVision={setDarkVision}
+          setLandSpeed={setLandSpeed}
+          advantageTypes={advantageTypes}
+          setAdvantageTypes={setAdvantageTypes}
+        />
+      </div>
+    </HealthContext.Provider>
   );
 }
 
