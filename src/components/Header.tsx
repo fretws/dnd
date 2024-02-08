@@ -4,7 +4,7 @@ import {Col, Container, Row} from 'react-bootstrap'
 import * as keys from '../data-keys'
 import FormInput from './FormInput'
 
-import { HealthContext } from '../App'
+import { StatsContext } from '../App'
 
 interface Props {
   name: String,
@@ -12,8 +12,8 @@ interface Props {
 
 export default function Header(props: Props) {
   return (
-    <HealthContext.Consumer>
-      {healthStats =>
+    <StatsContext.Consumer>
+      {stats =>
         <Container fluid className={styles.container}>
           <Row>
             <Col xs={1} />
@@ -23,17 +23,17 @@ export default function Header(props: Props) {
             <Col xs={2}>
               <FormInput defaultValue={"0"} onSubmit={(healthControl) => {
                 let inValue = parseInt(healthControl.value)
-                let newHealth = healthStats.health ? healthStats.health + inValue : inValue
-                healthStats.setHealth(newHealth)
+                let newHealth = stats.healthState.val ? stats.healthState.val + inValue : inValue
+                stats.healthState.set(newHealth)
                 window.localStorage.setItem(keys.HEALTH, String(newHealth))
               }} />
             </Col>
             <Col xs={3}>
-              <h2>{healthStats.health}/{healthStats.healthMax}HP</h2>
+              <h2>{stats.healthState.val}/{stats.healthMax}HP</h2>
             </Col>
           </Row>
         </Container>
       }
-    </HealthContext.Consumer>
+    </StatsContext.Consumer>
   )
 }

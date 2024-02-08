@@ -6,7 +6,7 @@ import React, {SetStateAction} from 'react'
 interface Props {
   dexMod: number,
   landSpeed: number,
-  armorAC: number,
+  armorBaseAC: number,
   darkVision: number,
   dualWielding: boolean,
   maledicts: number,
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function PanelAC(props: Props) {
-  let AC = props.armorAC + props.dexMod + (props.dualWielding ? 1 : 0)
+  let AC = props.armorBaseAC + props.dexMod + (props.dualWielding ? 1 : 0)
   let typeHitDice = window.localStorage.getItem(keys.TYPE_HIT_DICE)
   let maxMaledicts = window.localStorage.getItem(keys.MAX_MALEDICTS)
 

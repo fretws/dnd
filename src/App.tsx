@@ -5,38 +5,56 @@ import './App.css';
 import Header from './components/Header'
 import * as keys from './data-keys'
 import PanelContainer from './components/PanelContainer';
+import { State } from './utils';
 
 type AdvantageType = "disadvantage" | "none" | "advantage"
 export type AdvantageTypes = { [key: string]: AdvantageType }
 
-export interface HealthStats {
-  health: number,
-  setHealth: ( React.Dispatch<React.SetStateAction<number>> ) | ( (input: number) => null ),
+interface Stats {
+  dexState: State<number>,
+  intState: State<number>,
+  healthState: State<number>,
+  numHitDiceState: State<number>,
   healthMax: number,
-  numHitDice: number,
-  setNumHitDice: ( React.Dispatch<React.SetStateAction<number>> ) | ( (input: number) => null ),
 }
 
-export const HealthContext = createContext<HealthStats>({
-  health: -1,
-  setHealth: (input: number) => null,
+const DUMMY_STATE: State<number> = { val: -1, set: (input: number) => null };
+export const StatsContext = createContext<Stats>({
+  dexState: DUMMY_STATE,
+  intState: DUMMY_STATE,
+  healthState: DUMMY_STATE,
+  numHitDiceState: DUMMY_STATE,
   healthMax: -1,
-  numHitDice: -1,
-  setNumHitDice: (input: number) => null
 });
 
 function App() {
 
   let name = window.localStorage.getItem(keys.CHARACTER_NAME) || "Name not found"
-  let healthMax = parseInt(window.localStorage.getItem(keys.MAX_HEALTH) || "-1")
-  let armorAC = parseInt(window.localStorage.getItem(keys.ARMOR) || "-1")
   let level = parseInt(window.localStorage.getItem(keys.LEVEL) || "1")
 
-  const [health, setHealth] = React.useState(parseInt(window.localStorage.getItem(keys.HEALTH) || "-1"))
-  const [numHitDice, setNumHitDice] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_HIT_DICE) || "-1"))
-  const [landSpeed, setLandSpeed] = React.useState(parseInt(window.localStorage.getItem(keys.LAND_SPEED) || "-70"))
   const [dex, setDex] = React.useState(parseInt(window.localStorage.getItem(keys.DEX) || "-70"))
+  const dexState = {val: dex, set: setDex}
+  let dexMod = Math.floor((dex - 10) / 2)
   const [int, setInt] = React.useState(parseInt(window.localStorage.getItem(keys.INT) || "-70"))
+  const intState = {val: int, set: setInt}
+
+  const [health, setHealth] = React.useState(parseInt(window.localStorage.getItem(keys.HEALTH) || "-1"))
+  const healthState = {val: health, set: setHealth}
+  const [numHitDice, setNumHitDice] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_HIT_DICE) || "-1"))
+  const numHitDiceState = { val: numHitDice, set: setNumHitDice }
+  let healthMax = parseInt(window.localStorage.getItem(keys.MAX_HEALTH) || "-1")
+
+  const stats: Stats = {
+    dexState: dexState,
+    intState: intState,
+    healthState: healthState,
+    numHitDiceState: numHitDiceState,
+    healthMax: healthMax,
+  }
+
+  let armorBaseAC = parseInt(window.localStorage.getItem(keys.ARMOR) || "-1")
+
+  const [landSpeed, setLandSpeed] = React.useState(parseInt(window.localStorage.getItem(keys.LAND_SPEED) || "-70"))
   const [maledicts, setMaledicts] = React.useState(parseInt(window.localStorage.getItem(keys.NUM_MALEDICTS) || "-7"))
   let ritesString = window.localStorage.getItem(keys.ACTIVE_RITES) || JSON.stringify(["none", "none", "none"])
   const [activeRites, setRites] = React.useState(JSON.parse(ritesString))
@@ -49,15 +67,7 @@ function App() {
 
   const mutagenRefs = [React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null), React.useRef<HTMLInputElement>(null)]
 
-  let dexMod = Math.floor((dex - 10) / 2)
 
-  const healthStats: HealthStats = {
-    health: health,
-    setHealth: setHealth,
-    healthMax: healthMax,
-    numHitDice: numHitDice,
-    setNumHitDice: setNumHitDice,
-  }
 
   let shortRest = () => {
     console.log("Short Rest")
@@ -71,12 +81,12 @@ function App() {
   let longRest = () => {
     console.log("Long Rest")
     shortRest()
-    setNumHitDice(level)
-    setHealth(healthMax)
+    numHitDiceState.set(level)
+    healthState.set(healthMax)
   }
 
   return (
-    <HealthContext.Provider value={healthStats}>
+    <StatsContext.Provider value={stats}>
       <div className="App">
         <Header
           name={name}
@@ -84,7 +94,7 @@ function App() {
         <PanelContainer
           dexMod={dexMod}
           landSpeed={landSpeed}
-          armorAC={armorAC}
+          armorBaseAC={armorBaseAC}
           darkVision={darkVision}
           dualWielding={true}
           maledicts={maledicts}
@@ -101,17 +111,13 @@ function App() {
           setPreppedMutagens={setPreppedMutagens}
           activeMutagens={activeMutagens}
           setActiveMutagens={setActiveMutagens}
-          dex={dex}
-          setDex={setDex}
-          int={int}
-          setInt={setInt}
           setDarkVision={setDarkVision}
           setLandSpeed={setLandSpeed}
           advantageTypes={advantageTypes}
           setAdvantageTypes={setAdvantageTypes}
         />
       </div>
-    </HealthContext.Provider>
+    </StatsContext.Provider>
   );
 }
 

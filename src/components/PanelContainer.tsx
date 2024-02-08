@@ -12,7 +12,7 @@ interface Props {
   dexMod: number,
   landSpeed: number,
   setLandSpeed: React.Dispatch<React.SetStateAction<number>>,
-  armorAC: number,
+  armorBaseAC: number,
   darkVision: number,
   setDarkVision: React.Dispatch<React.SetStateAction<number>>,
   dualWielding: boolean,
@@ -30,10 +30,6 @@ interface Props {
   setPreppedMutagens: React.Dispatch<React.SetStateAction<boolean[]>>,
   activeMutagens: boolean[],
   setActiveMutagens: React.Dispatch<React.SetStateAction<boolean[]>>,
-  dex: number,
-  setDex: React.Dispatch<React.SetStateAction<number>>,
-  int: number,
-  setInt: React.Dispatch<React.SetStateAction<number>>,
   advantageTypes: AdvantageTypes,
   setAdvantageTypes: React.Dispatch<React.SetStateAction<AdvantageTypes>>,
 }
@@ -47,7 +43,7 @@ export default function PanelContainer(props: Props) {
           <PanelAC
             dexMod={props.dexMod}
             landSpeed={props.landSpeed}
-            armorAC={props.armorAC}
+            armorBaseAC={props.armorBaseAC}
             darkVision={props.darkVision}
             dualWielding={true}
             maledicts={props.maledicts}
@@ -78,10 +74,6 @@ export default function PanelContainer(props: Props) {
             setPreppedMutagens={props.setPreppedMutagens}
             activeMutagens={props.activeMutagens}
             setActiveMutagens={props.setActiveMutagens}
-            dex={props.dex}
-            setDex={props.setDex}
-            int={props.int}
-            setInt={props.setInt}
             darkVision={props.darkVision}
             setDarkVision={props.setDarkVision}
             landSpeed={props.landSpeed}
